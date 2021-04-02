@@ -11,6 +11,9 @@ is_ubuntu() { uname -a | grep -iq ubuntu; }
 cmd_exists() { type "$(which "$1")" > /dev/null 2>&1; }
 
 if is_ubuntu; then
+	if ! cmd_exists 'curl'; then
+		sudo apt install -y curl
+	fi
 	if ! cmd_exists 'git'; then
 		sudo apt install -y git vim
 	fi
