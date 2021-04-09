@@ -6,6 +6,7 @@ PRIVATE_DIR='.PRIVATE'
 #--------------------------- install tools  ---------------------------
 
 ROOT_DIR=$(cd $(dirname "$0"); pwd)
+VOLNAME=$(basename $ROOT_DIR)@encfs
 GROUP=$(id -gn)
 is_ubuntu() { uname -a | grep -iq ubuntu; }
 cmd_exists() { type "$(which "$1")" > /dev/null 2>&1; }
@@ -184,7 +185,7 @@ fi
 echo "source: $source_dir"
 echo "checkout: $checkout_dir"
 
-echo "$ECRYPTFS_PASS" | encfs --standard --stdinpass "$source_dir" "$checkout_dir"
+echo "$ECRYPTFS_PASS" | encfs -o volname="$VOLNAME" --verbose --standard --stdinpass "$source_dir" "$checkout_dir"
 chown -R $USER:$GROUP "$checkout_dir"
 
 if [ -z "$(ls -A ${checkout_dir})" ]; then
